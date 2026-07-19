@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass 
-class Player_Stats_Model:
+class Player_Stats:
     Name: str
     Player_ID: int # Retrieved From Player_Model
     Points_Average: float
