@@ -18,7 +18,7 @@ class Game_Repository:
     def add_game_stats(self, stats: Game_Stats):
         self.game_stats.append(stats)
 
-    def get_game_stats(self, game_id: int):
+    def search_game_stats(self, game_id: int):
         stats_for_game = []
 
         for stats in self.game_stats:
