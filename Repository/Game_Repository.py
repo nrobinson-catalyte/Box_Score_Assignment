@@ -8,24 +8,33 @@ class Game_Repository:
         self.games = []
         self.game_stats = []
 # Search Game
-    def get_game(self, game_id: int):
+    def get_game(self, game_identifier):
         for game in self.games:
-            if game.Game_ID == game_id:
+            if (game.Game_ID == game_identifier or
+                game.Home_Team == game_identifier or
+                game.Away_Team == game_identifier):
                 return game
-            
+
         return None
 # Search Game stats
     def add_game_stats(self, stats: Game_Stats):
         self.game_stats.append(stats)
 
-    def search_game_stats(self, game_id: int):
+    def search_game_stats(self, game_identifier):
         stats_for_game = []
 
-        for stats in self.game_stats:
-            if stats.Game_ID == game_id:
-                stats_for_game.append(stats)
+        for game in self.games:
+            if      (game.Game_ID == game_identifier or
+                game.Home_Team == game_identifier or
+                game.Away_Team == game_identifier):
 
-        return stats_for_game
+                for stats in self.game_stats:
+                    if stats.Game_ID == game.Game_ID:
+                        stats_for_game.append(stats)
+
+                return stats_for_game
+
+        return []
 # Add Game
     def add_game(self, game: Game):
         self.games.append(game)
