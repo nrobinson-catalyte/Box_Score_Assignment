@@ -29,6 +29,23 @@ def get_player_stats(self, player_identifier):
 def add_player(self, player: Player):
     self.players.append(player)
 
+# Update Player
+def update_player(self, player_identifier, new_name=None, weight=None, height=None, college=None):
+    player = self.get_player(player_identifier)
+
+    if player is None:
+        return False
+
+    if new_name is not None:
+        player.Name = new_name
+    if weight is not None:
+        player.Weight = weight
+    if height is not None:
+        player.Height = height
+    if college is not None:
+        player.College = college
+
+    return True
 
 # Delete Player
 def delete_player(self, player_identifier):

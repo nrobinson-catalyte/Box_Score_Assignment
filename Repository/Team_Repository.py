@@ -26,6 +26,25 @@ class Team_Repository:
 # Add Team
     def add_team(self, team: Team):
         self.teams.append(team)
+
+# Update Team
+    def update_team(self, team_name: str, city=None, state=None, arena=None, new_name=None):
+        team = self.search_team(team_name)
+
+        if team is None:
+            return False
+
+        if new_name is not None:
+            team.Name = new_name
+        if city is not None:
+            team.City = city
+        if state is not None:
+            team.State = state
+        if arena is not None:
+            team.Arena = arena
+
+        return True
+    
 # Delete Team
     def delete_team(self, team_name: str):
         for team in self.teams:
