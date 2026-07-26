@@ -11,6 +11,7 @@
         # College
         # Points Average
         # Assist Average
-        # Rebounds Average
+        # Rebound Average
+    # Needs a formula that gathers the game data to calculate each average
     # Exceptions
         # No Player is found.
