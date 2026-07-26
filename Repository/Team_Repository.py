@@ -5,23 +5,29 @@ class Team_Repository:
         self.teams = []
 
 # Search Team
-    def search_team(self, team_name: str):
+    def search_team(self, team_identifier):
+
         for team in self.teams:
-            if team.Name == team_name: 
+            if (
+                team.Name == team_identifier or
+                team.City == team_identifier or
+                team.State == team_identifier or
+                team.Arena == team_identifier or
+                team.Team_ID == team_identifier
+            ):
                 return team
         return None
 # Search Team Stats
-    def search_team_stats(self, team_name: str):
-        team = self.get_team(team_name)
-        if team:
-            return {
-                "Name": team.Name,
-                "City": team.City,
-                "State": team.State,
-                "Arena": team.Arena
-            }
+def search_team_stats(self, team_identifier):
+    team = self.search_team(team_identifier)
+    if team:
+        return {
+            "Team": team.Name,
+            "Location": f"{team.City}, {team.State}",
+            "Record": team.Record
+        }
 
-        return None
+    return None
 
 # Add Team
     def add_team(self, team: Team):
@@ -44,12 +50,45 @@ class Team_Repository:
             team.Arena = arena
 
         return True
-    
-# Delete Team
-    def delete_team(self, team_name: str):
+# Record of Team
+        # Add Team Win
+    def add_win(self, team_identifier):
+
+        team = self.search_team(team_identifier)
+        if team is None:
+            return False
+        wins, losses = team.Record.split("-")
+        wins = int(wins)
+        losses = int(losses)
+        wins += 1
+        team.Record = f"{wins}-{losses}"
+
+        return True   
+        # Add Team Loss
+    def add_loss(self, team_identifier):
+        team = self.search_team(team_identifier)
+
+        if team is None:
+            return False
+        wins, losses = team.Record.split("-")
+        wins = int(wins)
+        losses = int(losses)
+        losses += 1
+        team.Record = f"{wins}-{losses}"
+
+        return True 
+    # Delete Team
+    def delete_team(self, team_identifier):
+
         for team in self.teams:
-            if team.Name == team_name:
+            if (
+                team.Team_ID == team_identifier or
+                team.Name == team_identifier or
+                team.City == team_identifier or
+                team.State == team_identifier or
+                team.Arena == team_identifier
+            ):
                 self.teams.remove(team)
                 return True
-        
-        return False  
+
+        return False
