@@ -4,17 +4,23 @@ from Model.Player_Model import Player
 class Player_Repository:
 
     def __init__(self):
-        self.Players = []
-        self.Player_Stats = []
-        self.Player_Game_Stats = []
+        self.players
+        self.player_stats
+        self.player_game_stats
 # Search Player
 def get_player(self, player_identifier):
+
     for player in self.players:
-        if player.Player_ID == player_identifier or player.Name == player_identifier:
+        if (
+            player.Player_ID == player_identifier or
+            player.Name == player_identifier or
+            player.Weight == player_identifier or
+            player.Height == player_identifier or
+            player.College == player_identifier
+        ):
             return player
 
     return None
-
 
 # Search Player Stats
 def get_player_stats(self, player_identifier):
@@ -51,7 +57,13 @@ def update_player(self, player_identifier, new_name=None, weight=None, height=No
 def delete_player(self, player_identifier):
 
     for player in self.players:
-        if player.Player_ID == player_identifier or player.Name == player_identifier:
+        if (
+            player.Player_ID == player_identifier or
+            player.Name == player_identifier or
+            player.Weight == player_identifier or
+            player.Height == player_identifier or
+            player.College == player_identifier
+        ):
             self.players.remove(player)
             return True
 

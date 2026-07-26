@@ -9,10 +9,15 @@ class Game_Repository:
         self.game_stats = []
 # Search Game
     def get_game(self, game_identifier):
+
         for game in self.games:
-            if (game.Game_ID == game_identifier or
+            if (
+                game.Game_ID == game_identifier or
                 game.Home_Team == game_identifier or
-                game.Away_Team == game_identifier):
+                game.Away_Team == game_identifier or
+                game.Date == game_identifier or
+                game.Arena == game_identifier
+            ):
                 return game
 
         return None
