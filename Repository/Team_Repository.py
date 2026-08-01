@@ -18,16 +18,16 @@ class Team_Repository:
                 return team
         return None
 # Search Team Stats
-def search_team_stats(self, team_identifier):
-    team = self.search_team(team_identifier)
-    if team:
-        return {
-            "Team": team.Name,
-            "Location": f"{team.City}, {team.State}",
-            "Record": team.Record
-        }
+    def search_team_stats(self, team_identifier):
+        team = self.search_team(team_identifier)
+        if team:
+            return {
+                "Team": team.Name,
+                "Location": f"{team.City}, {team.State}",
+                "Record": team.Record
+            }
 
-    return None
+        return None
 
 # Add Team
     def add_team(self, team: Team):
