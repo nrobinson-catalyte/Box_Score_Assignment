@@ -57,3 +57,13 @@ class Game_Repository:
                 return True
 
         return False
+# Return All Games 
+    def get_all_games(self):
+        return self.games
+
+    def get_game_map(self) -> dict[int, str]:
+        """Return a mapping of game IDs to game names."""
+        return {
+            game.Game_ID: f"{game.Home_Team} vs {game.Away_Team}"
+            for game in self.games
+        }

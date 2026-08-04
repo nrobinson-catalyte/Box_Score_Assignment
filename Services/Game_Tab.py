@@ -7,6 +7,9 @@ class Game_Service:
     def __init__(self, game_repository: Game_Repository):
         self.game_repository = game_repository
 
+    # Get All Games
+    def get_all_games(self):
+        return self.game_repository.get_all_games()
     # Search Game
     def search_game(self, game_identifier):
         game = self.game_repository.get_game(game_identifier)

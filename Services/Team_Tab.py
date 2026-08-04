@@ -7,7 +7,10 @@ class Team_Service:
     def __init__(self, team_repository: Team_Repository):
         self.team_repository = team_repository
 
-
+    # Get All Teams
+    def get_all_teams(self):
+        return self.team_repository.get_all_teams()
+    
     # Search Team
     def search_team(self, team_identifier):
 
@@ -17,7 +20,6 @@ class Team_Service:
             raise ValueError("Team not found.")
 
         return team
-
 
     # Add Team
     def add_team(self, team: Team):

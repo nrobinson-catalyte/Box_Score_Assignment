@@ -33,6 +33,19 @@ class Team_Repository:
     def add_team(self, team: Team):
         self.teams.append(team)
 
+# Get All Teams
+    def get_all_teams(self):
+        """Return a copy of all teams."""
+        return self.teams.copy()
+    def get_teams_map(self) -> dict[int, str]:
+        """Return a mapping of team IDs to team names, sorted A-Z."""
+        sorted_teams = sorted(self.teams, key=lambda team: team.Name)
+
+        return {
+            team.Team_ID: team.Name
+            for team in sorted_teams
+        }
+    
 # Update Team
     def update_team(self, team_name: str, city=None, state=None, arena=None, new_name=None):
         team = self.search_team(team_name)

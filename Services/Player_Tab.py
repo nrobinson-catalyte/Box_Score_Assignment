@@ -7,6 +7,9 @@ class Player_Service:
     def __init__(self, player_repository: Player_Repository):
         self.player_repository = player_repository
 
+    # Get All Players
+    def get_all_players(self):
+        return self.player_repository.get_all_players()
     # Search Player
     def search_player(self, player_identifier):
 
