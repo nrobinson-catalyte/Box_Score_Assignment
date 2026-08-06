@@ -20,6 +20,7 @@ from Services.Search_Tab.Team_Stats_Service import Team_Stats_Service
 from Services.Game_Tab import Game_Service
 from Services.Player_Tab import Player_Service
 from Services.Team_Tab import Team_Service
+from Database.database import create_tables
 
 # ============================================================
 # TERMINAL COLORS
@@ -203,7 +204,16 @@ def confirm(prompt: str) -> bool:
         colored(f"{prompt} Type YES to confirm: ", Colors.YELLOW)
     ).strip()
     return response.upper() == "YES"
+# ============================================================
+# Data Base Connection
+# ============================================================
+def main():
 
+    create_tables()
+
+    player_repository = Player_Repository()
+    team_repository = Team_Repository()
+    game_repository = Game_Repository()
 # ============================================================
 # TABLE DISPLAYS
 # ============================================================
@@ -818,4 +828,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    print("Starting NBA Stat Tracker...")
     main()

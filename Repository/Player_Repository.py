@@ -1,46 +1,108 @@
 from Model.Player_Model import Player
+from Database.database import get_connection
 
 
 class Player_Repository:
 
-    def __init__(self):
-        self.players = []
-        self.player_stats = []
-        self.player_game_stats = []
-# Search Player
+    # ============================================================
+    # Search Player
+    # ============================================================
     def get_player(self, player_identifier):
 
-        for player in self.players:
-            if (
-                player.Player_ID == player_identifier or
-                player.Name == player_identifier or
-                player.Weight == player_identifier or
-                player.Height == player_identifier or
-                player.College == player_identifier
-            ):
-                return player
+        connection = get_connection()
+        cursor = connection.cursor()
 
-        return None
+        cursor.execute(
+            """
+            SELECT *
+            FROM Players
+            WHERE Player_ID = ?
+               OR Name = ?
+            """,
+            (player_identifier, player_identifier)
+        )
 
-# Search Player Stats
-    def get_player_stats(self, player_identifier):
-        for stats in self.player_stats:
-            if stats.Player_ID == player_identifier or stats.Name == player_identifier:
-                return stats
+        row = cursor.fetchone()
 
-        return None
+        connection.close()
 
+        if row is None:
+            return None
 
-# Add Player
-    def add_player(self, player: Player):
-        self.players.append(player)
+        return Player(
+            Player_ID=row[0],
+            Name=row[1],
+            Height=row[2],
+            Weight=row[3],
+            College=row[4]
+        )
 
-# Get All Players 
+    # ============================================================
+    # Add Player
+    # ============================================================
+    def add_player(self, player):
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO Players
+            (Player_ID, Name, Height, Weight, College)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                player.Player_ID,
+                player.Name,
+                player.Height,
+                player.Weight,
+                player.College,
+            ),
+        )
+
+        connection.commit()
+        connection.close()
+
+    # ============================================================
+    # Get All Players
+    # ============================================================
     def get_all_players(self):
-        return self.players.copy()
-    
-    def get_players_map(self) -> dict[int, str]:
-        """Return a mapping of player IDs to player names."""
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM Players
+            ORDER BY Name
+            """
+        )
+
+        rows = cursor.fetchall()
+
+        connection.close()
+
+        players = []
+
+        for row in rows:
+            players.append(
+                Player(
+                    Player_ID=row[0],
+                    Name=row[1],
+                    Height=row[2],
+                    Weight=row[3],
+                    College=row[4],
+                )
+            )
+
+        return players
+
+    # ============================================================
+    # Get Players Map
+    # ============================================================
+    def get_players_map(self):
+
         players = self.get_all_players()
 
         return {
@@ -48,53 +110,71 @@ class Player_Repository:
             for player in players
         }
 
-# Update Player
-    def update_player(self, player_identifier, new_name=None, weight=None, height=None, college=None):
+    # ============================================================
+    # Update Player
+    # ============================================================
+    def update_player(
+        self,
+        player_identifier,
+        new_name=None,
+        weight=None,
+        height=None,
+        college=None,
+    ):
+
         player = self.get_player(player_identifier)
 
         if player is None:
             return False
 
-        if new_name is not None:
-            player.Name = new_name
-        if weight is not None:
-            player.Weight = weight
-        if height is not None:
-            player.Height = height
-        if college is not None:
-            player.College = college
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            UPDATE Players
+            SET Name = ?,
+                Weight = ?,
+                Height = ?,
+                College = ?
+            WHERE Player_ID = ?
+            """,
+            (
+                new_name if new_name is not None else player.Name,
+                weight if weight is not None else player.Weight,
+                height if height is not None else player.Height,
+                college if college is not None else player.College,
+                player.Player_ID,
+            ),
+        )
+
+        connection.commit()
+        connection.close()
 
         return True
 
-# Delete Player
+    # ============================================================
+    # Delete Player
+    # ============================================================
     def delete_player(self, player_identifier):
 
-        for player in self.players:
-            if (
-                player.Player_ID == player_identifier or
-                player.Name == player_identifier or
-                player.Weight == player_identifier or
-                player.Height == player_identifier or
-                player.College == player_identifier
-            ):
-                self.players.remove(player)
-                return True
+        player = self.get_player(player_identifier)
 
-        return False
+        if player is None:
+            return False
 
+        connection = get_connection()
+        cursor = connection.cursor()
 
-# Delete Player Stats
-    def delete_player_stats(self, player_identifier):
+        cursor.execute(
+            """
+            DELETE FROM Players
+            WHERE Player_ID = ?
+            """,
+            (player.Player_ID,),
+        )
 
-        self.player_stats = [
-            stats for stats in self.player_stats
-            if stats.Player_ID != player_identifier 
-            and stats.Name != player_identifier
-        ]
-
-        self.player_game_stats = [
-            stats for stats in self.player_game_stats
-            if stats.Player_ID != player_identifier
-        ]
+        connection.commit()
+        connection.close()
 
         return True

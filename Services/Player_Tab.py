@@ -23,11 +23,35 @@ class Player_Service:
     # Add Player
     def add_player(self, player: Player):
 
-        # Prevent duplicate Player IDs
-        if self.player_repository.get_player(player.Player_ID):
+        # Check if the Player ID already exists
+        existing_player = self.player_repository.get_player(player.Player_ID)
+
+        if existing_player is not None:
             raise ValueError("Player ID already exists.")
 
         self.player_repository.add_player(player)
+
+        return True
+    #
+    def update_player(
+        self,
+        player_identifier,
+        new_name=None,
+        weight=None,
+        height=None,
+        college=None
+    ):
+
+        updated = self.player_repository.update_player(
+            player_identifier,
+            new_name,
+            weight,
+            height,
+            college
+        )
+
+        if not updated:
+            raise ValueError("Player not found.")
 
         return True
 
